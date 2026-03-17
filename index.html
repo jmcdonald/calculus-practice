@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus I — Exam 1 Practice</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsxgraph@1.9.2/distrib/jsxgraphcore.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.9.2/distrib/jsxgraph.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #16161a;
+            --bg-card: #1c1c21;
+            --bg-card-hover: #222228;
+            --bg-input: #2a2a32;
+            --text-primary: #ffffffee;
+            --text-secondary: #a0a0b0;
+            --text-muted: #6b6b7b;
+            --accent-blue: #456DFF;
+            --accent-pink: #FF6BD5;
+            --accent-green: #29CC57;
+            --accent-yellow: #F7C325;
+            --accent-red: #FF5D5D;
+            --accent-teal: #00D4AA;
+            --gradient-hero: linear-gradient(135deg, #456DFF 0%, #FF6BD5 50%, #F7C325 100%);
+            --gradient-card: linear-gradient(135deg, rgba(69,109,255,0.08) 0%, rgba(255,107,213,0.05) 100%);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-pill: 54px;
+            --shadow-card: 0 4px 24px rgba(0,0,0,0.3);
+            --shadow-glow: 0 0 40px rgba(69,109,255,0.15);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NAV ===== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 999;
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(13,13,15,0.85);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .nav-links a.active {
+            color: var(--text-primary);
+            background: rgba(69,109,255,0.15);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(69,109,255,0.12) 0%, transparent 60%),
+                        radial-gradient(ellipse at 30% 20%, rgba(255,107,213,0.06) 0%, transparent 50%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { opacity: 0.6; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: rgba(69,109,255,0.12);
+            border: 1px solid rgba(69,109,255,0.2);
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.25rem;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            font-family: var(--font);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: #000;
+            box-shadow: 0 4px 0 0 #1fa343;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 0 0 #1fa343;
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 0 0 #1fa343;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-check {
+            background: var(--accent-blue);
+            color: #fff;
+            box-shadow: 0 4px 0 0 #2d4ecc;
+            transform: translateY(-2px);
+            padding: 0.6rem 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-check:hover { transform: translateY(-3px); }
+        .btn-check:active { transform: translateY(0); box-shadow: 0 1px 0 0 #2d4ecc; }
+
+        /* ===== CONTENT LAYOUT ===== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* ===== TOPIC NAV CARDS ===== */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .topic-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .topic-card:nth-child(1)::before { background: var(--accent-blue); }
+        .topic-card:nth-child(2)::before { background: var(--accent-pink); }
+        .topic-card:nth-child(3)::before { background: var(--accent-yellow); }
+
+        .topic-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .topic-icon {
+            width: 48px; height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .topic-card:nth-child(1) .topic-icon { background: rgba(69,109,255,0.12); }
+        .topic-card:nth-child(2) .topic-icon { background: rgba(255,107,213,0.12); }
+        .topic-card:nth-child(3) .topic-icon { background: rgba(247,195,37,0.12); }
+
+        .topic-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .topic-card .topic-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ===== PROBLEM CARDS ===== */
+        .problem-section {
+            margin-bottom: 2rem;
+        }
+
+        .problem-section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .problem-section-title .section-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .problem-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            margin-bottom: 1.25rem;
+            transition: var(--transition);
+        }
+
+        .problem-card:hover {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .problem-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .problem-number {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+
+        .problem-difficulty {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-pill);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .diff-easy { background: rgba(41,204,87,0.12); color: var(--accent-green); }
+        .diff-medium { background: rgba(247,195,37,0.12); color: var(--accent-yellow); }
+        .diff-hard { background: rgba(255,93,93,0.12); color: var(--accent-red); }
+
+        .problem-body {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1.25rem;
+        }
+
+        .problem-body .katex { font-size: 1.1em; }
+
+        .problem-parts {
+            list-style: none;
+            margin-top: 0.75rem;
+        }
+
+        .problem-parts li {
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .problem-parts li::before {
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .problem-parts li:nth-child(1)::before { content: '(a)'; }
+        .problem-parts li:nth-child(2)::before { content: '(b)'; }
+        .problem-parts li:nth-child(3)::before { content: '(c)'; }
+        .problem-parts li:nth-child(4)::before { content: '(d)'; }
+        .problem-parts li:nth-child(5)::before { content: '(e)'; }
+        .problem-parts li:nth-child(6)::before { content: '(f)'; }
+
+        /* ===== ANSWER INPUT ===== */
+        .answer-area {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .answer-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.6rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(69,109,255,0.15);
+        }
+
+        .answer-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ===== SOLUTION REVEAL ===== */
+        .solution-toggle {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-secondary);
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .solution-toggle:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.15);
+            color: var(--text-primary);
+        }
+
+        .solution-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+            opacity: 0;
+            background: rgba(69,109,255,0.04);
+            border-radius: var(--radius-md);
+            margin-top: 0;
+        }
+
+        .solution-content.open {
+            max-height: 2000px;
+            opacity: 1;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(69,109,255,0.1);
+        }
+
+        .solution-content h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-blue);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .solution-step {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .solution-step:last-child { border-bottom: none; }
+
+        .solution-step .step-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-teal);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .final-answer {
+            background: rgba(41,204,87,0.08);
+            border: 1px solid rgba(41,204,87,0.15);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* ===== INTERACTIVE GRAPH AREAS ===== */
+        .graph-container {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .graph-container h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .jxgbox {
+            width: 100%;
+            height: 350px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        /* ===== FEEDBACK STATES ===== */
+        .feedback {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: none;
+            margin-top: 0.5rem;
+            animation: fadeSlideIn 0.3s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct {
+            display: block;
+            background: rgba(41,204,87,0.1);
+            border: 1px solid rgba(41,204,87,0.2);
+            color: var(--accent-green);
+        }
+
+        .feedback.incorrect {
+            display: block;
+            background: rgba(255,93,93,0.1);
+            border: 1px solid rgba(255,93,93,0.2);
+            color: var(--accent-red);
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar-container {
+            position: sticky;
+            top: 64px;
+            z-index: 998;
+            background: var(--bg-primary);
+            padding: 0.75rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-hero);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+            text-align: right;
+        }
+
+        /* ===== SCORE CARD ===== */
+        .score-card {
+            background: var(--gradient-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            display: none;
+        }
+
+        .score-card.visible { display: block; animation: fadeSlideIn 0.5s ease; }
+
+        .score-value {
+            font-size: 4rem;
+            font-weight: 800;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+
+        footer a { color: var(--accent-blue); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 768px) {
+            .hero { padding: 6rem 1.5rem 3rem; }
+            .hero h1 { font-size: 2rem; }
+            .hero-stats { gap: 1.5rem; }
+            .hero-stat-value { font-size: 1.5rem; }
+            .nav-links { display: none; }
+            .container { padding: 0 1.25rem; }
+            .topic-grid { grid-template-columns: 1fr; }
+            .answer-area { flex-direction: column; }
+            .answer-input { min-width: 100%; }
+        }
+
+        /* ===== KATEX OVERRIDES ===== */
+        .katex { color: var(--text-primary); }
+        .katex-display { margin: 1rem 0; overflow-x: auto; }
+
+        /* ===== HINT SYSTEM ===== */
+        .hint-btn {
+            background: none;
+            border: none;
+            color: var(--accent-yellow);
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: var(--font);
+            font-weight: 500;
+            padding: 0.3rem 0;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .hint-btn:hover { opacity: 1; }
+
+        .hint-text {
+            display: none;
+            font-size: 0.85rem;
+            color: var(--accent-yellow);
+            background: rgba(247,195,37,0.06);
+            border: 1px solid rgba(247,195,37,0.12);
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius-sm);
+            margin-top: 0.5rem;
+        }
+
+        .hint-text.visible { display: block; animation: fadeSlideIn 0.3s ease; }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+        /* ===== TABLE STYLING ===== */
+        .ref-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        .ref-table th {
+            text-align: left;
+            padding: 0.6rem 1rem;
+            background: rgba(69,109,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-blue);
+        }
+        .ref-table td {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="nav-brand">Calc I — Exam 1</div>
+    <ul class="nav-links">
+        <li><a href="#topics" class="active">Topics</a></li>
+        <li><a href="#limits">Limits</a></li>
+        <li><a href="#continuity">Continuity</a></li>
+        <li><a href="#derivatives">Derivatives</a></li>
+        <li><a href="#reference">Reference</a></li>
+    </ul>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">📐 Spring 2026 &middot; Chapters 2 & 3</div>
+        <h1>Master <span class="gradient-text">Calculus</span> Exam 1</h1>
+        <p>Practice test with step-by-step solutions, interactive graphs, and instant feedback. Based on <em>Calculus: Early Transcendentals</em> by Briggs, Cochran, Gillett &amp; Schulz.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+            <a href="#practice" class="btn btn-primary">Start Practice Test →</a>
+            <a href="#reference" class="btn btn-secondary">Quick Reference</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">20</div>
+                <div class="hero-stat-label">Problems</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">3</div>
+                <div class="hero-stat-label">Topics</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">∞</div>
+                <div class="hero-stat-label">Retries</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PROGRESS ===== -->
+<div class="progress-bar-container" id="progress-container" style="display:none;">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-text" id="progress-text">0 / 20 answered</div>
+</div>
+
+<!-- ===== TOPIC OVERVIEW ===== -->
+<section id="topics">
+    <div class="container">
+        <div class="section-header">
+            <h2>What's on the Exam</h2>
+            <p>Three core areas — click to jump to practice problems</p>
+        </div>
+        <div class="topic-grid">
+            <div class="topic-card" onclick="document.getElementById('limits').scrollIntoView({behavior:'smooth'})">
+                <div class="topic-icon">∞</div>
+                <h3>Evaluate Limits</h3>
+                <p>Limit laws, one-sided limits, squeeze theorem, L'Hôpital alternatives, limits at infinity, and epsilon-delta proofs.</p>
+                <div class="topic-count">📝 8 problems</div>
+            </div>
+            <div class="topic-card" onclick="document.getElementById('continuity').scrollIntoView({behavior:'smooth'})">
+                <div class="topic-icon">⟶</div>
+                <h3>Determine Continuity</h3>
+                <p>Three-part definition, continuity rules, types of discontinuities, and the Intermediate Value Theorem.</p>
+                <div class="topic-count">📝 5 problems</div>
+            </div>
+            <div class="topic-card" onclick="document.getElementById('derivatives').scrollIntoView({behavior:'smooth'})">
+                <div class="topic-icon">𝑓′</div>
+                <h3>Find Derivatives</h3>
+                <p>Limit definitions, tangent lines, differentiability, power/product/quotient/chain rules, trig & exponential derivatives.</p>
+                <div class="topic-count">📝 7 problems</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== INTERACTIVE GRAPH: LIMITS ===== -->
+<div class="container">
+    <div class="graph-container">
+        <h4>🔬 Interactive: Explore Limits Visually</h4>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem;">
+            Drag the point along the curve to see how $f(x)$ approaches the limit. Toggle the function to explore different behaviors.
+        </p>
+        <div id="limit-graph" class="jxgbox"></div>
+        <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap;">
+            <button class="btn-check" onclick="setGraphFunction('rational')" style="font-size:0.75rem;padding:0.4rem 1rem;">$\frac{x^2-1}{x-1}$</button>
+            <button class="btn-check" onclick="setGraphFunction('sinx')" style="font-size:0.75rem;padding:0.4rem 1rem;">$\frac{\sin x}{x}$</button>
+            <button class="btn-check" onclick="setGraphFunction('abs')" style="font-size:0.75rem;padding:0.4rem 1rem;">$\frac{|x|}{x}$</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== PRACTICE TEST ===== -->
+<section id="practice">
+    <div class="container">
+        <div class="section-header">
+            <h2>Practice Test</h2>
+            <p>Work through each problem, then check your answer or reveal the full solution</p>
+        </div>
+
+        <!-- ========== LIMITS ========== -->
+        <div class="problem-section" id="limits">
+            <div class="problem-section-title">
+                <span class="section-dot" style="background:var(--accent-blue);"></span>
+                Part I — Evaluate Limits
+            </div>
+
+            <!-- Problem 1 -->
+            <div class="problem-card" data-problem="1">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 1</span>
+                    <span class="problem-difficulty diff-easy">Easy</span>
+                </div>
+                <div class="problem-body">
+                    Evaluate using limit laws:
+                    $$\lim_{x \to 3} \left(2x^2 - 5x + 1\right)$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-1" placeholder="Enter your answer..." data-answer="4">
+                    <button class="btn btn-check" onclick="checkAnswer(1)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(1)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-1"></div>
+                <div class="solution-content" id="sol-1">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Direct Substitution</div>
+                        Since $f(x) = 2x^2 - 5x + 1$ is a polynomial, it is continuous everywhere. Apply direct substitution:
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Evaluate</div>
+                        $$f(3) = 2(3)^2 - 5(3) + 1 = 18 - 15 + 1 = 4$$
+                    </div>
+                    <div class="final-answer">$$\lim_{x \to 3} \left(2x^2 - 5x + 1\right) = \boxed{4}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 2 -->
+            <div class="problem-card" data-problem="2">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 2</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Evaluate the limit using an analytic technique (factor and cancel):
+                    $$\lim_{x \to 2} \frac{x^2 - 4}{x - 2}$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-2" placeholder="Enter your answer..." data-answer="4">
+                    <button class="btn btn-check" onclick="checkAnswer(2)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(2)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-2"></div>
+                <button class="hint-btn" onclick="toggleHint(2)">💡 Need a hint?</button>
+                <div class="hint-text" id="hint-2">Try factoring the numerator as a difference of squares: $a^2 - b^2 = (a-b)(a+b)$</div>
+                <div class="solution-content" id="sol-2">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Identify the Form</div>
+                        Direct substitution gives $\frac{0}{0}$, an indeterminate form. We need an analytic technique.
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Factor</div>
+                        $$\frac{x^2 - 4}{x - 2} = \frac{(x-2)(x+2)}{x-2}$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 3 — Cancel & Evaluate</div>
+                        For $x \neq 2$: $= x + 2$. So $\lim_{x\to 2}(x+2) = 4$.
+                    </div>
+                    <div class="final-answer">$$\lim_{x \to 2} \frac{x^2 - 4}{x - 2} = \boxed{4}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 3 -->
+            <div class="problem-card" data-problem="3">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 3</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Evaluate by rationalizing (conjugate technique):
+                    $$\lim_{x \to 0} \frac{\sqrt{x+4} - 2}{x}$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-3" placeholder="Enter your answer (as a fraction)..." data-answer="1/4">
+                    <button class="btn btn-check" onclick="checkAnswer(3)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(3)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-3"></div>
+                <button class="hint-btn" onclick="toggleHint(3)">💡 Need a hint?</button>
+                <div class="hint-text" id="hint-3">Multiply top and bottom by the conjugate: $\sqrt{x+4} + 2$</div>
+                <div class="solution-content" id="sol-3">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Multiply by Conjugate</div>
+                        $$\frac{\sqrt{x+4}-2}{x} \cdot \frac{\sqrt{x+4}+2}{\sqrt{x+4}+2} = \frac{(x+4)-4}{x(\sqrt{x+4}+2)} = \frac{x}{x(\sqrt{x+4}+2)}$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Simplify & Evaluate</div>
+                        $$= \frac{1}{\sqrt{x+4}+2} \xrightarrow{x\to 0} \frac{1}{\sqrt{4}+2} = \frac{1}{4}$$
+                    </div>
+                    <div class="final-answer">$$\lim_{x \to 0} \frac{\sqrt{x+4} - 2}{x} = \boxed{\frac{1}{4}}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 4 -->
+            <div class="problem-card" data-problem="4">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 4</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Evaluate the limit using the Squeeze Theorem:
+                    $$\lim_{x \to 0} x^2 \cos\!\left(\frac{1}{x}\right)$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-4" placeholder="Enter your answer..." data-answer="0">
+                    <button class="btn btn-check" onclick="checkAnswer(4)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(4)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-4"></div>
+                <button class="hint-btn" onclick="toggleHint(4)">💡 Need a hint?</button>
+                <div class="hint-text" id="hint-4">Since $-1 \leq \cos(1/x) \leq 1$, what can you say about $-x^2 \leq x^2\cos(1/x) \leq x^2$?</div>
+                <div class="solution-content" id="sol-4">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Set Up Bounds</div>
+                        We know $-1 \leq \cos(1/x) \leq 1$ for all $x \neq 0$. Multiply by $x^2 \geq 0$:
+                        $$-x^2 \leq x^2\cos\!\left(\frac{1}{x}\right) \leq x^2$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Evaluate Bounding Limits</div>
+                        $$\lim_{x\to 0}(-x^2) = 0 \quad\text{and}\quad \lim_{x\to 0} x^2 = 0$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 3 — Apply Squeeze Theorem</div>
+                        Since both bounds → 0, the function squeezed between them also → 0.
+                    </div>
+                    <div class="final-answer">$$\lim_{x \to 0} x^2\cos\!\left(\frac{1}{x}\right) = \boxed{0}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 5 -->
+            <div class="problem-card" data-problem="5">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 5</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Evaluate the limit at infinity:
+                    $$\lim_{x \to \infty} \frac{3x^3 - 2x + 1}{5x^3 + 4x^2 - 7}$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-5" placeholder="Enter your answer (as a fraction)..." data-answer="3/5">
+                    <button class="btn btn-check" onclick="checkAnswer(5)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(5)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-5"></div>
+                <button class="hint-btn" onclick="toggleHint(5)">💡 Need a hint?</button>
+                <div class="hint-text" id="hint-5">Divide every term by the highest power in the denominator: $x^3$</div>
+                <div class="solution-content" id="sol-5">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Divide by $x^3$</div>
+                        $$\frac{3x^3 - 2x + 1}{5x^3 + 4x^2 - 7} = \frac{3 - \frac{2}{x^2} + \frac{1}{x^3}}{5 + \frac{4}{x} - \frac{7}{x^3}}$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Apply Limit</div>
+                        As $x \to \infty$, all $\frac{k}{x^n} \to 0$. So we get $\frac{3}{5}$.
+                    </div>
+                    <div class="final-answer">$$\lim_{x \to \infty} \frac{3x^3 - 2x + 1}{5x^3 + 4x^2 - 7} = \boxed{\frac{3}{5}}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 6 -->
+            <div class="problem-card" data-problem="6">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 6</span>
+                    <span class="problem-difficulty diff-hard">Hard</span>
+                </div>
+                <div class="problem-body">
+                    Determine the infinite limit and identify the vertical asymptote:
+                    $$\lim_{x \to 1^+} \frac{x + 3}{(x - 1)^2}$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-6" placeholder="Enter: infinity, -infinity, or DNE..." data-answer="infinity">
+                    <button class="btn btn-check" onclick="checkAnswer(6)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(6)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-6"></div>
+                <div class="solution-content" id="sol-6">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Analyze the Sign</div>
+                        As $x \to 1^+$: the numerator $x+3 \to 4 > 0$. The denominator $(x-1)^2 \to 0^+$ (always positive since squared).
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Conclude</div>
+                        $\frac{\text{positive}}{\text{small positive}} \to +\infty$. The line $x = 1$ is a vertical asymptote.
+                    </div>
+                    <div class="final-answer">$$\lim_{x \to 1^+} \frac{x+3}{(x-1)^2} = \boxed{+\infty}$$<br>Vertical asymptote at $x = 1$.</div>
+                </div>
+            </div>
+
+            <!-- Problem 7 -->
+            <div class="problem-card" data-problem="7">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 7</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Evaluate the special trig limit:
+                    $$\lim_{x \to 0} \frac{\sin(5x)}{3x}$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-7" placeholder="Enter your answer (as a fraction)..." data-answer="5/3">
+                    <button class="btn btn-check" onclick="checkAnswer(7)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(7)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-7"></div>
+                <button class="hint-btn" onclick="toggleHint(7)">💡 Need a hint?</button>
+                <div class="hint-text" id="hint-7">Rewrite using the identity $\lim_{u\to 0}\frac{\sin u}{u} = 1$ by setting $u = 5x$.</div>
+                <div class="solution-content" id="sol-7">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Rewrite</div>
+                        $$\frac{\sin(5x)}{3x} = \frac{5}{3}\cdot\frac{\sin(5x)}{5x}$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Apply Known Limit</div>
+                        As $x \to 0$, $5x \to 0$ and $\frac{\sin(5x)}{5x} \to 1$. Therefore the limit is $\frac{5}{3}$.
+                    </div>
+                    <div class="final-answer">$$\lim_{x \to 0}\frac{\sin(5x)}{3x} = \boxed{\frac{5}{3}}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 8 -->
+            <div class="problem-card" data-problem="8">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 8</span>
+                    <span class="problem-difficulty diff-hard">Hard</span>
+                </div>
+                <div class="problem-body">
+                    Use the $\varepsilon$-$\delta$ definition of the limit to prove:
+                    $$\lim_{x \to 2} (3x - 1) = 5$$
+                    Given $\varepsilon > 0$, find $\delta$ in terms of $\varepsilon$.
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-8" placeholder="δ = ε/..." data-answer="epsilon/3">
+                    <button class="btn btn-check" onclick="checkAnswer(8)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(8)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-8"></div>
+                <div class="solution-content" id="sol-8">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Set Up</div>
+                        We need: $|f(x) - L| < \varepsilon$ whenever $0 < |x - a| < \delta$.
+                        $$|(3x - 1) - 5| < \varepsilon \implies |3x - 6| < \varepsilon \implies 3|x - 2| < \varepsilon$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Solve for $\delta$</div>
+                        $$|x - 2| < \frac{\varepsilon}{3}$$
+                        So choose $\delta = \frac{\varepsilon}{3}$.
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 3 — Verify</div>
+                        If $0 < |x-2| < \delta = \varepsilon/3$, then $|(3x-1)-5| = 3|x-2| < 3\cdot\frac{\varepsilon}{3} = \varepsilon$. ✓
+                    </div>
+                    <div class="final-answer">$$\delta = \boxed{\frac{\varepsilon}{3}}$$</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== CONTINUITY ========== -->
+        <div class="problem-section" id="continuity">
+            <div class="problem-section-title">
+                <span class="section-dot" style="background:var(--accent-pink);"></span>
+                Part II — Determine Continuity
+            </div>
+
+            <!-- Problem 9 -->
+            <div class="problem-card" data-problem="9">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 9</span>
+                    <span class="problem-difficulty diff-easy">Easy</span>
+                </div>
+                <div class="problem-body">
+                    State the three conditions required for $f$ to be continuous at $x = a$, and determine if the following function is continuous at $x = 1$:
+                    $$f(x) = \begin{cases} x^2 + 1 & x \neq 1 \\ 3 & x = 1 \end{cases}$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-9" placeholder="continuous or discontinuous?" data-answer="discontinuous">
+                    <button class="btn btn-check" onclick="checkAnswer(9)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(9)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-9"></div>
+                <div class="solution-content" id="sol-9">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">The Three Conditions</div>
+                        1. $f(a)$ is defined.<br>
+                        2. $\lim_{x\to a} f(x)$ exists.<br>
+                        3. $\lim_{x\to a} f(x) = f(a)$.
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Check Each</div>
+                        ✅ $f(1) = 3$ — defined.<br>
+                        ✅ $\lim_{x\to 1} f(x) = \lim_{x\to 1}(x^2+1) = 2$ — exists.<br>
+                        ❌ $\lim_{x\to 1} f(x) = 2 \neq 3 = f(1)$ — FAILS condition 3.
+                    </div>
+                    <div class="final-answer">$f$ is <strong>discontinuous</strong> at $x = 1$ (removable discontinuity).</div>
+                </div>
+            </div>
+
+            <!-- Problem 10 -->
+            <div class="problem-card" data-problem="10">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 10</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Determine where $g(x)$ is continuous:
+                    $$g(x) = \frac{x^2 - 9}{x^2 - 5x + 6}$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-10" placeholder="List excluded x values..." data-answer="2,3">
+                    <button class="btn btn-check" onclick="checkAnswer(10)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(10)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-10"></div>
+                <div class="solution-content" id="sol-10">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Factor the Denominator</div>
+                        $$x^2 - 5x + 6 = (x-2)(x-3)$$
+                        Denominator is zero at $x = 2$ and $x = 3$.
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Apply Continuity Rules</div>
+                        $g$ is a rational function. Rational functions are continuous everywhere they are defined, i.e., where the denominator $\neq 0$.
+                    </div>
+                    <div class="final-answer">$g$ is continuous on $(-\infty, 2) \cup (2, 3) \cup (3, \infty)$.<br>Discontinuous at $\boxed{x = 2}$ and $\boxed{x = 3}$.</div>
+                </div>
+            </div>
+
+            <!-- Problem 11 -->
+            <div class="problem-card" data-problem="11">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 11</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Find the value of $k$ that makes $f$ continuous at $x = 3$:
+                    $$f(x) = \begin{cases} kx + 1 & x \leq 3 \\ x^2 + 1 & x > 3 \end{cases}$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-11" placeholder="k = ..." data-answer="3">
+                    <button class="btn btn-check" onclick="checkAnswer(11)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(11)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-11"></div>
+                <div class="solution-content" id="sol-11">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Left and Right Limits Must Match</div>
+                        Left: $\lim_{x\to 3^-} (kx+1) = 3k + 1$<br>
+                        Right: $\lim_{x\to 3^+} (x^2+1) = 10$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Solve</div>
+                        $$3k + 1 = 10 \implies 3k = 9 \implies k = 3$$
+                    </div>
+                    <div class="final-answer">$$k = \boxed{3}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 12 -->
+            <div class="problem-card" data-problem="12">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 12</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Use the <strong>Intermediate Value Theorem</strong> to show that $f(x) = x^3 + x - 1$ has a root in the interval $[0, 1]$.
+                </div>
+                <div class="answer-area">
+                    <button class="solution-toggle" onclick="toggleSolution(12)">
+                        <span>▶</span> Show Proof
+                    </button>
+                </div>
+                <div class="solution-content" id="sol-12">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Verify Hypotheses</div>
+                        $f(x) = x^3 + x - 1$ is a polynomial, so it is continuous on $[0,1]$. ✅
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Evaluate Endpoints</div>
+                        $f(0) = 0 + 0 - 1 = -1 < 0$<br>
+                        $f(1) = 1 + 1 - 1 = 1 > 0$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 3 — Apply IVT</div>
+                        Since $f$ is continuous on $[0,1]$ and $f(0) < 0 < f(1)$, by the IVT there exists $c \in (0,1)$ such that $f(c) = 0$. ∎
+                    </div>
+                </div>
+            </div>
+
+            <!-- Problem 13 -->
+            <div class="problem-card" data-problem="13">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 13</span>
+                    <span class="problem-difficulty diff-easy">Easy</span>
+                </div>
+                <div class="problem-body">
+                    Which of the following functions are continuous for all real numbers? Select all that apply.
+                    <ul class="problem-parts">
+                        <li>$f(x) = e^x$</li>
+                        <li>$g(x) = \tan x$</li>
+                        <li>$h(x) = x^4 - 3x^2 + 2$</li>
+                        <li>$p(x) = \ln x$</li>
+                        <li>$q(x) = \sin x$</li>
+                    </ul>
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-13" placeholder="Enter letters: a, c, e" data-answer="a,c,e">
+                    <button class="btn btn-check" onclick="checkAnswer(13)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(13)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-13"></div>
+                <div class="solution-content" id="sol-13">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        ✅ (a) $e^x$ — exponential, continuous everywhere<br>
+                        ❌ (b) $\tan x$ — undefined at $x = \frac{\pi}{2} + n\pi$<br>
+                        ✅ (c) $x^4-3x^2+2$ — polynomial, continuous everywhere<br>
+                        ❌ (d) $\ln x$ — only defined for $x > 0$<br>
+                        ✅ (e) $\sin x$ — continuous everywhere
+                    </div>
+                    <div class="final-answer">Continuous everywhere: $\boxed{(a),\ (c),\ (e)}$</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== DERIVATIVES ========== -->
+        <div class="problem-section" id="derivatives">
+            <div class="problem-section-title">
+                <span class="section-dot" style="background:var(--accent-yellow);"></span>
+                Part III — Find & Interpret Derivatives
+            </div>
+
+            <!-- Problem 14 -->
+            <div class="problem-card" data-problem="14">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 14</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Use the <strong>limit definition</strong> of the derivative to find $f'(x)$ for:
+                    $$f(x) = 3x^2 - 2x + 5$$
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-14" placeholder="f'(x) = ..." data-answer="6x-2">
+                    <button class="btn btn-check" onclick="checkAnswer(14)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(14)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-14"></div>
+                <div class="solution-content" id="sol-14">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Set Up the Definition</div>
+                        $$f'(x) = \lim_{h\to 0}\frac{f(x+h) - f(x)}{h}$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Expand $f(x+h)$</div>
+                        $$f(x+h) = 3(x+h)^2 - 2(x+h) + 5 = 3x^2 + 6xh + 3h^2 - 2x - 2h + 5$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 3 — Compute Difference & Simplify</div>
+                        $$\frac{(3x^2+6xh+3h^2-2x-2h+5)-(3x^2-2x+5)}{h} = \frac{6xh+3h^2-2h}{h} = 6x+3h-2$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 4 — Take Limit</div>
+                        $$\lim_{h\to 0}(6x+3h-2) = 6x - 2$$
+                    </div>
+                    <div class="final-answer">$$f'(x) = \boxed{6x - 2}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 15 -->
+            <div class="problem-card" data-problem="15">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 15</span>
+                    <span class="problem-difficulty diff-easy">Easy</span>
+                </div>
+                <div class="problem-body">
+                    A ball is thrown upward with position $s(t) = -16t^2 + 64t + 5$ (feet, seconds).
+                    <ul class="problem-parts">
+                        <li>Find the velocity function $v(t) = s'(t)$.</li>
+                        <li>Find the velocity at $t = 1$ second.</li>
+                        <li>At what time does the ball reach its maximum height?</li>
+                    </ul>
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-15" placeholder="Max height time t = ..." data-answer="2">
+                    <button class="btn btn-check" onclick="checkAnswer(15)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(15)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-15"></div>
+                <div class="solution-content" id="sol-15">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">(a) Velocity Function</div>
+                        $$v(t) = s'(t) = -32t + 64$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">(b) Velocity at $t = 1$</div>
+                        $$v(1) = -32(1) + 64 = 32 \text{ ft/s (upward)}$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">(c) Maximum Height</div>
+                        Set $v(t) = 0$: $-32t + 64 = 0 \implies t = 2$ seconds.
+                    </div>
+                    <div class="final-answer">$v(t) = -32t+64$, $v(1) = 32$ ft/s, max height at $t = \boxed{2}$ sec.</div>
+                </div>
+            </div>
+
+            <!-- Problem 16 -->
+            <div class="problem-card" data-problem="16">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 16</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Find the tangent line to $f(x) = x^3 - 4x$ at the point $(2, 0)$.
+                </div>
+                <div class="answer-area">
+                    <input type="text" class="answer-input" id="ans-16" placeholder="y = ..." data-answer="8x-16">
+                    <button class="btn btn-check" onclick="checkAnswer(16)">Check</button>
+                    <button class="solution-toggle" onclick="toggleSolution(16)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="feedback" id="feedback-16"></div>
+                <div class="solution-content" id="sol-16">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Find $f'(x)$</div>
+                        $$f'(x) = 3x^2 - 4$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Slope at $x=2$</div>
+                        $$f'(2) = 3(4) - 4 = 8$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 3 — Point-Slope Form</div>
+                        $$y - 0 = 8(x - 2) \implies y = 8x - 16$$
+                    </div>
+                    <div class="final-answer">$$y = \boxed{8x - 16}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 17 -->
+            <div class="problem-card" data-problem="17">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 17</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Differentiate using the product and chain rules:
+                    $$y = e^{2x}\sin(3x)$$
+                </div>
+                <div class="answer-area">
+                    <button class="solution-toggle" onclick="toggleSolution(17)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="solution-content" id="sol-17">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Product Rule</div>
+                        Let $u = e^{2x}$ and $v = \sin(3x)$. Then $y' = u'v + uv'$.
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Chain Rule for Each</div>
+                        $u' = 2e^{2x}$ (chain rule: derivative of $2x$ is 2)<br>
+                        $v' = 3\cos(3x)$ (chain rule: derivative of $3x$ is 3)
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 3 — Combine</div>
+                        $$y' = 2e^{2x}\sin(3x) + 3e^{2x}\cos(3x) = e^{2x}\left[2\sin(3x) + 3\cos(3x)\right]$$
+                    </div>
+                    <div class="final-answer">$$y' = \boxed{e^{2x}\left[2\sin(3x) + 3\cos(3x)\right]}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 18 -->
+            <div class="problem-card" data-problem="18">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 18</span>
+                    <span class="problem-difficulty diff-medium">Medium</span>
+                </div>
+                <div class="problem-body">
+                    Differentiate using the quotient rule:
+                    $$h(x) = \frac{\cos x}{1 + \sin x}$$
+                </div>
+                <div class="answer-area">
+                    <button class="solution-toggle" onclick="toggleSolution(18)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="solution-content" id="sol-18">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — Quotient Rule</div>
+                        $$h'(x) = \frac{(-\sin x)(1+\sin x) - (\cos x)(\cos x)}{(1+\sin x)^2}$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Expand Numerator</div>
+                        $$= \frac{-\sin x - \sin^2 x - \cos^2 x}{(1+\sin x)^2} = \frac{-\sin x - (\sin^2 x + \cos^2 x)}{(1+\sin x)^2}$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 3 — Pythagorean Identity</div>
+                        $$= \frac{-\sin x - 1}{(1+\sin x)^2} = \frac{-(1+\sin x)}{(1+\sin x)^2} = \frac{-1}{1+\sin x}$$
+                    </div>
+                    <div class="final-answer">$$h'(x) = \boxed{\frac{-1}{1 + \sin x}}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 19 -->
+            <div class="problem-card" data-problem="19">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 19</span>
+                    <span class="problem-difficulty diff-hard">Hard</span>
+                </div>
+                <div class="problem-body">
+                    Find the second derivative $f''(x)$ of:
+                    $$f(x) = \ln(x^2 + 1)$$
+                </div>
+                <div class="answer-area">
+                    <button class="solution-toggle" onclick="toggleSolution(19)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="solution-content" id="sol-19">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        <div class="step-label">Step 1 — First Derivative (Chain Rule)</div>
+                        $$f'(x) = \frac{1}{x^2+1}\cdot 2x = \frac{2x}{x^2+1}$$
+                    </div>
+                    <div class="solution-step">
+                        <div class="step-label">Step 2 — Second Derivative (Quotient Rule)</div>
+                        $$f''(x) = \frac{2(x^2+1) - 2x(2x)}{(x^2+1)^2} = \frac{2x^2 + 2 - 4x^2}{(x^2+1)^2} = \frac{2 - 2x^2}{(x^2+1)^2}$$
+                    </div>
+                    <div class="final-answer">$$f''(x) = \boxed{\frac{2(1-x^2)}{(x^2+1)^2}}$$</div>
+                </div>
+            </div>
+
+            <!-- Problem 20 -->
+            <div class="problem-card" data-problem="20">
+                <div class="problem-header">
+                    <span class="problem-number">Problem 20</span>
+                    <span class="problem-difficulty diff-hard">Hard</span>
+                </div>
+                <div class="problem-body">
+                    A function $f$ has the graph shown below. At which points is $f$ <strong>not differentiable</strong>? Classify each as: corner, cusp, vertical tangent, or discontinuity.
+                </div>
+                <div class="graph-container" style="margin-top:1rem;">
+                    <div id="diff-graph" class="jxgbox" style="height:300px;"></div>
+                </div>
+                <div class="answer-area">
+                    <button class="solution-toggle" onclick="toggleSolution(20)">
+                        <span>▶</span> Solution
+                    </button>
+                </div>
+                <div class="solution-content" id="sol-20">
+                    <h4>Step-by-Step Solution</h4>
+                    <div class="solution-step">
+                        $f$ is not differentiable at:<br><br>
+                        <strong>$x = -2$</strong>: <strong>Jump discontinuity</strong> — left and right limits don't match, so $f$ is not continuous (and differentiability requires continuity).<br><br>
+                        <strong>$x = 0$</strong>: <strong>Corner</strong> — the function is continuous but the left derivative $\neq$ right derivative (the slope changes abruptly).<br><br>
+                        <strong>$x = 2$</strong>: <strong>Cusp</strong> — the left and right derivatives approach $+\infty$ and $-\infty$ respectively.
+                    </div>
+                    <div class="final-answer">Not differentiable at $x = -2$ (discontinuity), $x = 0$ (corner), $x = 2$ (cusp).</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SCORE CARD ===== -->
+        <div class="score-card" id="score-card">
+            <div class="score-value" id="score-value">0%</div>
+            <div class="score-label">Practice Score</div>
+            <p style="color:var(--text-secondary);margin-top:1rem;font-size:0.9rem;" id="score-message"></p>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== QUICK REFERENCE ===== -->
+<section id="reference">
+    <div class="container">
+        <div class="section-header">
+            <h2>Quick Reference</h2>
+            <p>Key formulas and rules for Exam 1</p>
+        </div>
+
+        <div class="problem-card">
+            <h3 style="margin-bottom:1rem;">Limit Laws</h3>
+            <table class="ref-table">
+                <tr><th>Law</th><th>Statement</th></tr>
+                <tr><td>Sum/Diff</td><td>$\lim [f \pm g] = \lim f \pm \lim g$</td></tr>
+                <tr><td>Product</td><td>$\lim [f \cdot g] = \lim f \cdot \lim g$</td></tr>
+                <tr><td>Quotient</td><td>$\lim \frac{f}{g} = \frac{\lim f}{\lim g}$, provided $\lim g \neq 0$</td></tr>
+                <tr><td>Power</td><td>$\lim [f]^n = [\lim f]^n$</td></tr>
+                <tr><td>Root</td><td>$\lim \sqrt[n]{f} = \sqrt[n]{\lim f}$</td></tr>
+            </table>
+        </div>
+
+        <div class="problem-card" style="margin-top:1.25rem;">
+            <h3 style="margin-bottom:1rem;">Special Limits</h3>
+            <table class="ref-table">
+                <tr><th>Limit</th><th>Value</th></tr>
+                <tr><td>$\lim_{x\to 0} \frac{\sin x}{x}$</td><td>$1$</td></tr>
+                <tr><td>$\lim_{x\to 0} \frac{1 - \cos x}{x}$</td><td>$0$</td></tr>
+                <tr><td>$\lim_{x\to \infty} \left(1 + \frac{1}{x}\right)^x$</td><td>$e$</td></tr>
+            </table>
+        </div>
+
+        <div class="problem-card" style="margin-top:1.25rem;">
+            <h3 style="margin-bottom:1rem;">Derivative Rules</h3>
+            <table class="ref-table">
+                <tr><th>Rule</th><th>Formula</th></tr>
+                <tr><td>Power</td><td>$\frac{d}{dx}[x^n] = nx^{n-1}$</td></tr>
+                <tr><td>Product</td><td>$(fg)' = f'g + fg'$</td></tr>
+                <tr><td>Quotient</td><td>$\left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$</td></tr>
+                <tr><td>Chain</td><td>$\frac{d}{dx}[f(g(x))] = f'(g(x))\cdot g'(x)$</td></tr>
+                <tr><td>$\sin x$</td><td>$\cos x$</td></tr>
+                <tr><td>$\cos x$</td><td>$-\sin x$</td></tr>
+                <tr><td>$\tan x$</td><td>$\sec^2 x$</td></tr>
+                <tr><td>$e^x$</td><td>$e^x$</td></tr>
+                <tr><td>$\ln x$</td><td>$\frac{1}{x}$</td></tr>
+                <tr><td>$a^x$</td><td>$a^x \ln a$</td></tr>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <p>Built with ❤️ by Dad's "fancy AI" &middot; <em>Calculus: Early Transcendentals</em> — Briggs, Cochran, Gillett & Schulz</p>
+    <p style="margin-top:0.5rem;">Good luck, favorite daughter. You've got this. 💪</p>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    // ===== ANSWER CHECKING =====
+    const totalProblems = 20;
+    let answered = new Set();
+    let correct = 0;
+
+    function normalize(str) {
+        return str.toLowerCase().replace(/\s+/g,'').replace(/\+/g,'');
+    }
+
+    function checkAnswer(num) {
+        const input = document.getElementById(`ans-${num}`);
+        if (!input) return;
+        const userAns = normalize(input.value);
+        const correctAns = normalize(input.dataset.answer);
+        const feedback = document.getElementById(`feedback-${num}`);
+
+        // Handle multiple acceptable answers
+        const acceptableAnswers = correctAns.split('|');
+        const isCorrect = acceptableAnswers.some(a => {
+            if (a === userAns) return true;
+            // Handle fractions
+            if (a.includes('/')) {
+                const [num, den] = a.split('/').map(Number);
+                const decimal = num / den;
+                if (Math.abs(parseFloat(userAns) - decimal) < 0.001) return true;
+            }
+            // Handle special values
+            if (a === 'infinity' && (userAns === '∞' || userAns === 'inf' || userAns === '+infinity' || userAns === '+inf' || userAns === '+∞')) return true;
+            if (a === '-infinity' && (userAns === '-∞' || userAns === '-inf')) return true;
+            // Handle epsilon
+            if (a === 'epsilon/3' && (userAns === 'ε/3' || userAns === 'e/3' || userAns === 'eps/3' || userAns === 'epsilon/3')) return true;
+            return false;
+        });
+
+        if (!userAns) {
+            feedback.textContent = 'Enter an answer first!';
+            feedback.className = 'feedback incorrect';
+            return;
+        }
+
+        if (isCorrect) {
+            feedback.innerHTML = '✓ Correct! Nice work.';
+            feedback.className = 'feedback correct';
+            input.style.borderColor = 'var(--accent-green)';
+            if (!answered.has(num)) { correct++; }
+        } else {
+            feedback.innerHTML = '✗ Not quite — try again or check the solution.';
+            feedback.className = 'feedback incorrect';
+            input.style.borderColor = 'var(--accent-red)';
+        }
+        answered.add(num);
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const pct = Math.round((answered.size / totalProblems) * 100);
+        const container = document.getElementById('progress-container');
+        container.style.display = 'block';
+        document.getElementById('progress-fill').style.width = pct + '%';
+        document.getElementById('progress-text').textContent = `${answered.size} / ${totalProblems} answered`;
+
+        if (answered.size >= 13) { // 13 = number of problems with answer inputs
+            const score = Math.round((correct / 13) * 100);
+            const card = document.getElementById('score-card');
+            card.classList.add('visible');
+            document.getElementById('score-value').textContent = score + '%';
+            const msg = document.getElementById('score-message');
+            if (score >= 90) msg.textContent = "Outstanding! You're ready for this exam. 🎉";
+            else if (score >= 70) msg.textContent = "Good work! Review the ones you missed and try again.";
+            else msg.textContent = "Keep practicing! Review the solutions and give it another shot.";
+        }
+    }
+
+    // ===== SOLUTION TOGGLE =====
+    function toggleSolution(num) {
+        const sol = document.getElementById(`sol-${num}`);
+        sol.classList.toggle('open');
+        // Re-render KaTeX in newly visible content
+        if (sol.classList.contains('open')) {
+            renderMathInElement(sol, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        }
+    }
+
+    // ===== HINT TOGGLE =====
+    function toggleHint(num) {
+        const hint = document.getElementById(`hint-${num}`);
+        hint.classList.toggle('visible');
+        if (hint.classList.contains('visible')) {
+            renderMathInElement(hint, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        }
+    }
+
+    // ===== ENTER KEY HANDLER =====
+    document.querySelectorAll('.answer-input').forEach(input => {
+        input.addEventListener('keypress', e => {
+            if (e.key === 'Enter') {
+                const num = input.id.replace('ans-','');
+                checkAnswer(parseInt(num));
+            }
+        });
+    });
+
+    // ===== NAV SCROLL HIGHLIGHTING =====
+    const sections = document.querySelectorAll('.problem-section');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const top = section.offsetTop - 150;
+            if (window.scrollY >= top) current = section.id;
+        });
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+        });
+    });
+
+    // ===== INTERACTIVE LIMIT GRAPH =====
+    let limitBoard;
+    let graphFn, graphPt, graphLabel;
+
+    function initLimitGraph() {
+        limitBoard = JXG.JSXGraph.initBoard('limit-graph', {
+            boundingbox: [-5, 8, 5, -3],
+            axis: true,
+            grid: false,
+            showNavigation: false,
+            showCopyright: false,
+            defaultAxes: {
+                x: { strokeColor: '#444', highlightStrokeColor: '#444' },
+                y: { strokeColor: '#444', highlightStrokeColor: '#444' }
+            },
+            renderer: 'svg'
+        });
+
+        // Style the board background
+        limitBoard.containerObj.style.backgroundColor = '#16161a';
+
+        setGraphFunction('rational');
+    }
+
+    function setGraphFunction(type) {
+        if (graphFn) limitBoard.removeObject(graphFn);
+        if (graphPt) limitBoard.removeObject(graphPt);
+        if (graphLabel) limitBoard.removeObject(graphLabel);
+
+        let fn, startX = 0.5, limitX, limitY, title;
+
+        if (type === 'rational') {
+            fn = x => (x*x - 1) / (x - 1);
+            limitX = 1; limitY = 2;
+            title = 'lim(x→1) (x²−1)/(x−1) = 2';
+        } else if (type === 'sinx') {
+            fn = x => x === 0 ? 1 : Math.sin(x) / x;
+            limitX = 0; limitY = 1;
+            startX = 0.5;
+            title = 'lim(x→0) sin(x)/x = 1';
+        } else if (type === 'abs') {
+            fn = x => x === 0 ? undefined : Math.abs(x) / x;
+            limitX = 0; limitY = undefined;
+            startX = 0.5;
+            title = 'lim(x→0) |x|/x — DNE!';
+        }
+
+        graphFn = limitBoard.create('functiongraph', [fn, -5, 5], {
+            strokeColor: '#456DFF',
+            strokeWidth: 2.5,
+            highlight: false
+        });
+
+        if (type !== 'abs') {
+            // Show the limit point (open circle)
+            limitBoard.create('point', [limitX, limitY], {
+                size: 5, fillColor: '#16161a', strokeColor: '#FF6BD5',
+                strokeWidth: 2, fixed: true, name: '', highlight: false
+            });
+        }
+
+        // Draggable point
+        graphPt = limitBoard.create('glider', [startX, fn(startX), graphFn], {
+            size: 6, fillColor: '#29CC57', strokeColor: '#29CC57',
+            strokeWidth: 2, name: '', highlight: true
+        });
+
+        graphLabel = limitBoard.create('text', [
+            () => graphPt.X() + 0.3,
+            () => graphPt.Y() + 0.5,
+            () => `(${graphPt.X().toFixed(3)}, ${graphPt.Y().toFixed(3)})`
+        ], {
+            fontSize: 13, color: '#a0a0b0', anchorX: 'left', highlight: false
+        });
+
+        // Title
+        limitBoard.create('text', [-4.5, 7, title], {
+            fontSize: 14, color: '#FF6BD5', fixed: true, highlight: false
+        });
+    }
+
+    // ===== DIFFERENTIABILITY GRAPH (Problem 20) =====
+    function initDiffGraph() {
+        const board = JXG.JSXGraph.initBoard('diff-graph', {
+            boundingbox: [-5, 5, 5, -3],
+            axis: true,
+            grid: false,
+            showNavigation: false,
+            showCopyright: false,
+            defaultAxes: {
+                x: { strokeColor: '#444', highlightStrokeColor: '#444' },
+                y: { strokeColor: '#444', highlightStrokeColor: '#444' }
+            },
+            renderer: 'svg'
+        });
+
+        board.containerObj.style.backgroundColor = '#16161a';
+
+        // Piece 1: x < -2 (line going to a point)
+        board.create('functiongraph', [x => x + 4, -5, -2], {
+            strokeColor: '#F7C325', strokeWidth: 2.5, highlight: false
+        });
+        // Open circle at (-2, 2) for jump
+        board.create('point', [-2, 2], {
+            size: 5, fillColor: '#16161a', strokeColor: '#F7C325',
+            strokeWidth: 2, fixed: true, name: '', highlight: false
+        });
+
+        // Piece 2: -2 <= x <= 0 (line from different value)
+        board.create('functiongraph', [x => -x, -2, 0], {
+            strokeColor: '#F7C325', strokeWidth: 2.5, highlight: false
+        });
+        // Filled circle at (-2, 2) to show where piece 2 starts
+        // Actually piece 2 at x=-2: -(-2) = 2, same y... let me make it a jump
+        // Let me adjust: piece 2 starts at y=0 at x=-2
+        // Redefine piece 2
+        board.removeObject(board.objectsList[board.objectsList.length - 1]);
+        board.create('functiongraph', [x => 0.5*x + 1, -2, 0], {
+            strokeColor: '#F7C325', strokeWidth: 2.5, highlight: false
+        });
+        board.create('point', [-2, 0], {
+            size: 5, fillColor: '#F7C325', strokeColor: '#F7C325',
+            strokeWidth: 2, fixed: true, name: '', highlight: false
+        });
+
+        // Piece 3: 0 < x < 2 (V shape — corner at 0)
+        board.create('functiongraph', [x => x + 1, 0, 2], {
+            strokeColor: '#F7C325', strokeWidth: 2.5, highlight: false
+        });
+
+        // Piece 4: x >= 2 (cusp — going back down sharply)
+        board.create('functiongraph', [x => -2*Math.sqrt(Math.abs(x-2)) + 3, 2, 5], {
+            strokeColor: '#F7C325', strokeWidth: 2.5, highlight: false
+        });
+
+        // Mark problem points
+        board.create('point', [0, 1], {
+            size: 5, fillColor: '#FF5D5D', strokeColor: '#FF5D5D',
+            strokeWidth: 2, fixed: true, name: 'corner', highlight: false,
+            label: {color: '#FF5D5D', fontSize: 11, offset: [5, 10]}
+        });
+
+        board.create('point', [2, 3], {
+            size: 5, fillColor: '#FF5D5D', strokeColor: '#FF5D5D',
+            strokeWidth: 2, fixed: true, name: 'cusp', highlight: false,
+            label: {color: '#FF5D5D', fontSize: 11, offset: [5, 10]}
+        });
+
+        board.create('text', [-2, -1.5, 'jump'], {
+            fontSize: 11, color: '#FF5D5D', fixed: true, highlight: false
+        });
+    }
+
+    // Initialize graphs when page loads
+    window.addEventListener('DOMContentLoaded', () => {
+        initLimitGraph();
+        initDiffGraph();
+    });
+</script>
+
+</body>
+</html>
